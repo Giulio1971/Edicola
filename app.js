@@ -1,6 +1,6 @@
 // Lista dei feed RSS che vuoi seguire
 const feeds = [
-  { name: "Il Tirreno", url: "https://iltirreno.gelocal.it/rss" },
+  { name: "Il Tirreno", url: "https://il-tirreno.webnode.it/rss/all.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
   { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
