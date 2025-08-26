@@ -25,7 +25,8 @@ function loadNews() {
         .then(data => data.items.map(item => ({
           title: item.title,
           link: item.link,
-          pubDate: new Date(item.pubDate)
+          pubDate: new Date(item.pubDate),
+          source: feed.name
         })))
         .catch(err => {
           console.error("Errore nel caricare", feed.name, err);
@@ -36,14 +37,27 @@ function loadNews() {
     // Flatten all items into one array
     let allItems = results.flat();
 
-    // Sort by date (newest first)
-    allItems.sort((a, b) => b.pubDate - a.pubDate);
+    // --- STEP 1: prendere le prime 2 notizie per ogni fonte ---
+    let topPerSource = [];
+    feeds.forEach(feed => {
+      const fromSource = allItems.filter(i => i.source === feed.name);
+      // ordina quelle di questa fonte in ordine cronologico
+      fromSource.sort((a, b) => b.pubDate - a.pubDate);
+      topPerSource.push(...fromSource.slice(0, 2));
+    });
 
-    // Keep only the latest 40
-    allItems = allItems.slice(0, 40);
+    // Ordina il blocco top in ordine cronologico decrescente
+    topPerSource.sort((a, b) => b.pubDate - a.pubDate);
 
-    // Render
-    allItems.forEach(item => {
+    // --- STEP 2: le altre notizie ---
+    let remaining = allItems.filter(item => !topPerSource.includes(item));
+    remaining.sort((a, b) => b.pubDate - a.pubDate);
+
+    // --- STEP 3: concatenare le due liste ---
+    const finalList = [...topPerSource, ...remaining];
+
+    // --- STEP 4: render in pagina ---
+    finalList.forEach(item => {
       const li = document.createElement("li");
 
       const formattedDate = item.pubDate.toLocaleString("it-IT", {
@@ -54,7 +68,6 @@ function loadNews() {
         minute: "2-digit"
       });
 
-      // Titolo cliccabile + data dopo
       li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
                       <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
 
