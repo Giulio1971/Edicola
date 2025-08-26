@@ -43,7 +43,7 @@ function loadNews() {
     allItems = allItems.slice(0, 40);
 
     // Render
-    allItems.forEach((item, index) => {
+    allItems.forEach(item => {
       const li = document.createElement("li");
 
       const formattedDate = item.pubDate.toLocaleString("it-IT", {
@@ -54,16 +54,9 @@ function loadNews() {
         minute: "2-digit"
       });
 
-    li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
-                  <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
-
-      // Highlight the 5 most recent
-      if (index < 5) {
-        li.style.backgroundColor = "#d4fcd4"; // light green
-        li.style.borderRadius = "4px";
-        li.style.padding = "8px";
-        li.style.marginBottom = "6px";
-      }
+      // Titolo cliccabile + data dopo
+      li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
+                      <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
 
       list.appendChild(li);
     });
