@@ -8,23 +8,21 @@ const feeds = [
 
 const container = document.getElementById("news");
 
+// Creo un unico <ul> che conterrà tutte le notizie
+const list = document.createElement("ul");
+container.appendChild(list);
+
 feeds.forEach(feed => {
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
-  
+
   fetch(apiUrl)
     .then(res => res.json())
     .then(data => {
-      const section = document.createElement("section");
-      section.innerHTML = `<h2>${feed.name}</h2><ul></ul>`;
-      const list = section.querySelector("ul");
-
       data.items.slice(0, 10).forEach(item => {
         const li = document.createElement("li");
         li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
         list.appendChild(li);
       });
-
-      container.appendChild(section);
     })
     .catch(err => {
       console.error("Errore nel caricare", feed.name, err);
