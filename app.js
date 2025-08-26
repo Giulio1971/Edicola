@@ -54,8 +54,8 @@ function loadNews() {
         minute: "2-digit"
       });
 
-      li.innerHTML = `<span style="color:#555; font-size:14px; margin-right:8px;">${formattedDate}</span>
-                      <a href="${item.link}" target="_blank">${item.title}</a>`;
+    li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
+                  <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
 
       // Highlight the 5 most recent
       if (index < 5) {
