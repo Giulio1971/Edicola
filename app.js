@@ -37,17 +37,14 @@ function loadNews() {
     // Flatten all items into one array
     let allItems = results.flat();
 
-    // --- STEP 1: prendere le prime 2 notizie per ogni fonte ---
+    // --- STEP 1: prime 2 notizie per ogni fonte (nell’ordine delle fonti) ---
     let topPerSource = [];
     feeds.forEach(feed => {
-      const fromSource = allItems.filter(i => i.source === feed.name);
-      // ordina quelle di questa fonte in ordine cronologico
-      fromSource.sort((a, b) => b.pubDate - a.pubDate);
+      const fromSource = allItems
+        .filter(i => i.source === feed.name)
+        .sort((a, b) => b.pubDate - a.pubDate); // ordino per prendere le 2 più recenti
       topPerSource.push(...fromSource.slice(0, 2));
     });
-
-    // Ordina il blocco top in ordine cronologico decrescente
-    topPerSource.sort((a, b) => b.pubDate - a.pubDate);
 
     // --- STEP 2: le altre notizie ---
     let remaining = allItems.filter(item => !topPerSource.includes(item));
