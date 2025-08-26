@@ -8,23 +8,70 @@ const feeds = [
 
 const container = document.getElementById("news");
 
-// Creo un unico <ul> che conterrà tutte le notizie
+// Create one <ul> for all news
 const list = document.createElement("ul");
 container.appendChild(list);
 
-feeds.forEach(feed => {
-  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+function loadNews() {
+  // Clear the list before re-rendering
+  list.innerHTML = "";
 
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(data => {
-      data.items.slice(0, 10).forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
-        list.appendChild(li);
-      });
+  // Fetch all feeds in parallel
+  Promise.all(
+    feeds.map(feed => {
+      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+      return fetch(apiUrl)
+        .then(res => res.json())
+        .then(data => data.items.map(item => ({
+          title: item.title,
+          link: item.link,
+          pubDate: new Date(item.pubDate)
+        })))
+        .catch(err => {
+          console.error("Errore nel caricare", feed.name, err);
+          return [];
+        });
     })
-    .catch(err => {
-      console.error("Errore nel caricare", feed.name, err);
+  ).then(results => {
+    // Flatten all items into one array
+    let allItems = results.flat();
+
+    // Sort by date (newest first)
+    allItems.sort((a, b) => b.pubDate - a.pubDate);
+
+    // Keep only the latest 40
+    allItems = allItems.slice(0, 40);
+
+    // Render
+    allItems.forEach((item, index) => {
+      const li = document.createElement("li");
+
+      const formattedDate = item.pubDate.toLocaleString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      li.innerHTML = `<span style="color:#555; font-size:14px; margin-right:8px;">${formattedDate}</span>
+                      <a href="${item.link}" target="_blank">${item.title}</a>`;
+
+      // Highlight the 5 most recent
+      if (index < 5) {
+        li.style.backgroundColor = "#d4fcd4"; // light green
+        li.style.borderRadius = "4px";
+        li.style.padding = "8px";
+        li.style.marginBottom = "6px";
+      }
+
+      list.appendChild(li);
     });
-});
+  });
+}
+
+// Initial load
+loadNews();
+
+// Refresh every 5 minutes (300,000 ms)
+setInterval(loadNews, 300000);
