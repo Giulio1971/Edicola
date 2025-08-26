@@ -37,7 +37,7 @@ function loadNews() {
     // Flatten all items into one array
     let allItems = results.flat();
 
-    // --- STEP 1: prime 2 notizie per ogni fonte ---
+    // --- STEP 1: prime 2 notizie per ogni fonte (ordine delle fonti) ---
     let topPerSource = [];
     feeds.forEach(feed => {
       const fromSource = allItems
@@ -67,7 +67,7 @@ function loadNews() {
       const formattedDate = `${dayName} alle ${hours}:${minutes}`;
 
       const li = document.createElement("li");
-      li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
+      li.innerHTML = `<a href="${item.link}">${item.title}</a>
                       <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
 
       list.appendChild(li);
