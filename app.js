@@ -18,7 +18,7 @@ feeds.forEach(feed => {
       section.innerHTML = `<h2>${feed.name}</h2><ul></ul>`;
       const list = section.querySelector("ul");
 
-      data.items.slice(0, 5).forEach(item => {
+      data.items.slice(0, 10).forEach(item => {
         const li = document.createElement("li");
         li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
         list.appendChild(li);
