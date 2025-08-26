@@ -3,124 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📰 La mia Edicola</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <title>Edicola digitale</title>
   <style>
-    :root {
-      --primary-color: #0077cc;
-      --secondary-color: #0055a4;
-      --text-color: #333;
-      --background-color: #f4f4f9;
-      --card-background: #fff;
-    }
-
     body {
       font-family: 'Roboto', sans-serif;
-      color: var(--text-color);
-      background-color: var(--background-color);
-      margin: 0;
-      padding: 1rem;
-    }
-
-    .container {
-      max-width: 768px;
+      background-color: #fafafa;
+      max-width: 600px;
       margin: auto;
-      padding: 0 1rem;
+      padding: 16px;
     }
-
-    header {
+    h1 {
+      font-size: 32px;
+      font-weight: 400;
+      color: #212121;
       text-align: center;
-      padding: 1.5rem 0;
+      margin: 24px 0;
     }
-
-    header h1 {
-      font-size: 2.5rem;
-      color: var(--secondary-color);
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    section {
+      background-color: white;
+      border-radius: 2px;
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+      padding: 16px;
+      margin-bottom: 24px;
     }
-    
-    header h1 span {
-        margin-left: 0.5rem;
+    h2 {
+      font-size: 24px;
+      font-weight: 500;
+      color: #212121;
+      margin: 0 0 16px 0;
     }
-
-    .news-section {
-      background-color: var(--card-background);
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .news-section h2 {
-      font-size: 1.5rem;
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 0.5rem;
-      margin-top: 0;
-      color: var(--secondary-color);
-    }
-
     ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
-
     li {
-      margin-bottom: 1rem;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
     }
-
+    li:last-child {
+      border-bottom: none;
+    }
     a {
+      color: #039be5;
       text-decoration: none;
-      color: var(--primary-color);
+      font-size: 16px;
       font-weight: 400;
-      display: block;
-      transition: color 0.3s ease;
     }
-
     a:hover {
-      color: var(--secondary-color);
       text-decoration: underline;
-    }
-    
-    @media (max-width: 480px) {
-        body {
-            padding: 0.5rem;
-        }
-        header h1 {
-            font-size: 2rem;
-        }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>📰<span>La mia Edicola</span></h1>
-    </header>
-    <div id="news">
-      <section class="news-section">
-        <h2>Qui Livorno</h2>
-        <ul>
-          <li><a href="#">Michela, Giulio, Marco e altri 22 amici tutti insieme al mare</a></li>
-          <li><a href="#">A Collesalvetti torna la Fiera paesana</a></li>
-          <li><a href="#">Ottavo appuntamento di Inni Sacri al Duomo</a></li>
-        </ul>
-      </section>
-      
-      <section class="news-section">
-        <h2>Il Tirreno</h2>
-        <ul>
-          <li><a href="#">Il Pagellone, Stagione 2013-14, L'annata del Double STAGIONE 2013-14: IL TIRRENO DEL DOUBLE- GLI IMMORTALI</a></li>
-          <li><a href="#">CLASSIFICA FINALE CAMPIONATO SECONDA CATEGORIA GIRONE F STAGIONE 13-14: TIRRENO CAMPIONE!</a></li>
-        </ul>
-      </section>
+  <h1>Edicola</h1>
+  <div id="news"></div>
 
-    </div>
-  </div>
   <script src="app.js"></script>
 </body>
 </html>
