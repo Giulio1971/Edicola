@@ -37,7 +37,7 @@ function loadNews() {
     // Flatten all items into one array
     let allItems = results.flat();
 
-    // --- STEP 1: prime 2 notizie per ogni fonte (nell’ordine delle fonti) ---
+    // --- STEP 1: prime 2 notizie per ogni fonte ---
     let topPerSource = [];
     feeds.forEach(feed => {
       const fromSource = allItems
@@ -50,21 +50,23 @@ function loadNews() {
     let remaining = allItems.filter(item => !topPerSource.includes(item));
     remaining.sort((a, b) => b.pubDate - a.pubDate);
 
-    // --- STEP 3: concatenare le due liste ---
-    const finalList = [...topPerSource, ...remaining];
+    // --- STEP 3: concatenare e limitare a 50 ---
+    const finalList = [...topPerSource, ...remaining].slice(0, 50);
 
     // --- STEP 4: render in pagina ---
     finalList.forEach(item => {
+      const days = [
+        "Domenica", "Lunedì", "Martedì",
+        "Mercoledì", "Giovedì", "Venerdì", "Sabato"
+      ];
+      const dayName = days[item.pubDate.getDay()];
+
+      const hours = item.pubDate.getHours().toString().padStart(2, "0");
+      const minutes = item.pubDate.getMinutes().toString().padStart(2, "0");
+
+      const formattedDate = `${dayName} alle ${hours}:${minutes}`;
+
       const li = document.createElement("li");
-
-      const formattedDate = item.pubDate.toLocaleString("it-IT", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-
       li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
                       <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
 
