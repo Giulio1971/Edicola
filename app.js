@@ -1,10 +1,9 @@
 // Lista dei feed RSS che vuoi seguire
 const feeds = [
-  { name: "Il Tirreno", url: "https://il-tirreno.webnode.it/rss/all.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
-  { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
-  { name: "Il Telegrafo (Livorno)", url: "https://iltirreno.gelocal.it/telegrafo/rss.xml" }
+  { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
+  { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" }
 ];
 
 const container = document.getElementById("news");
