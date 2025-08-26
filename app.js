@@ -20,7 +20,7 @@ function loadNews() {
   Promise.all(
     feeds.map(feed => {
       // Aggiungo un parametro casuale per bypassare cache
-      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}}`;
+      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
       return fetch(apiUrl)
         .then(res => res.json())
         .then(data => data.items.map(item => ({
