@@ -20,7 +20,7 @@ feeds.forEach(feed => {
     .then(data => {
       data.items.slice(0, 10).forEach(item => {
         const li = document.createElement("li");
-        // li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+        li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
         list.appendChild(li);
       });
     })
