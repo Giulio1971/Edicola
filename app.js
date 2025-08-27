@@ -15,7 +15,7 @@ container.appendChild(list);
 // Mappa fonte → colore di sfondo
 const sourceColors = {
   "Livorno Today": "#ffcccc",   // rosso chiaro
-  "LivornoPress": "#d2b48c",    // marrone chiaro
+  "LivornoPress": "#ccffcc",    // verde chiaro
   "Qui Livorno": "#cceeff",     // celeste chiaro
   "Comune": "#dddddd"           // grigio chiaro
 };
