@@ -12,6 +12,14 @@ const container = document.getElementById("news");
 const list = document.createElement("ul");
 container.appendChild(list);
 
+// Mappa fonte → colore di sfondo
+const sourceColors = {
+  "Livorno Today": "#ffcccc",   // rosso chiaro
+  "LivornoPress": "#d2b48c",    // marrone chiaro
+  "Qui Livorno": "#cceeff",     // celeste chiaro
+  "Comune": "#dddddd"           // grigio chiaro
+};
+
 function loadNews() {
   // Clear the list before re-rendering
   list.innerHTML = "";
@@ -69,6 +77,9 @@ function loadNews() {
       const li = document.createElement("li");
       li.innerHTML = `<a href="${item.link}">${item.title}</a>
                       <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
+
+      // Applica colore di sfondo in base alla fonte
+      li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
 
       list.appendChild(li);
     });
