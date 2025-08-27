@@ -50,7 +50,7 @@ function loadNews() {
     feeds.forEach(feed => {
       const fromSource = allItems
         .filter(i => i.source === feed.name)
-        .sort((a, b) => b.pubDate - a.pubDate); // ordino per prendere le 2 più recenti
+        .sort((a, b) => b.pubDate - a.pubDate);
       topPerSource.push(...fromSource.slice(0, 2));
     });
 
@@ -74,12 +74,20 @@ function loadNews() {
 
       const formattedDate = `${dayName} alle ${hours}:${minutes}`;
 
+      // --- CARD stile Material ---
       const li = document.createElement("li");
-      li.innerHTML = `<a href="${item.link}">${item.title}</a>
-                      <span style="color:#555; font-size:14px; margin-left:8px;">${formattedDate}</span>`;
-
-      // Applica colore di sfondo in base alla fonte
       li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
+      li.style.padding = "12px";
+      li.style.borderRadius = "8px";
+      li.style.marginBottom = "8px";
+      li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; // ombra leggera stile material
+
+      li.innerHTML = `<a href="${item.link}" target="_blank" style="font-weight:bold; color:#000; text-decoration:none;">
+                        ${item.title}
+                      </a>
+                      <span style="color:#555; font-size:14px; margin-left:8px;">
+                        ${formattedDate}
+                      </span>`;
 
       list.appendChild(li);
     });
