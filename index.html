@@ -9,10 +9,17 @@
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fafafa;
-      max-width: 600px;
-      margin: auto;
+      max-width: 100%;  /* massima larghezza piena */
+      margin: 0;
       padding: 16px;
     }
+
+    /* Container della lista */
+    #news {
+      max-width: 600px;
+      margin: auto;
+    }
+
     h1 {
       font-size: 32px;
       font-weight: 400;
@@ -20,31 +27,44 @@
       text-align: center;
       margin: 24px 0;
     }
+
     ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
+
     li {
       padding: 16px 0;
       border-bottom: 1px solid rgba(0,0,0,0.12);
     }
+
     li:last-child {
       border-bottom: none;
     }
+
     a {
       color: #000000;
       text-decoration: none;
       font-size: 16px;
       font-weight: 400;
     }
+
     a:hover {
       text-decoration: underline;
+    }
+
+    /* Media query per desktop: espande #news su tutta la larghezza */
+    @media (min-width: 768px) {
+      #news {
+        max-width: none;
+        margin: 0;
+      }
     }
   </style>
 </head>
 <body>
-<!--  <h1>Edicola</h1> -->
+  <!-- <h1>Edicola</h1> -->
   <div id="news"></div>
 
   <script src="app.js"></script>
