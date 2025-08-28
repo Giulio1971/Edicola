@@ -1,3 +1,6 @@
+// Parole da escludere da tutte le fonti
+const excludedWords = ["Oroscopo", "Basket", "Calcio"];
+
 // Lista dei feed RSS che vuoi seguire
 const feeds = [
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
@@ -23,10 +26,8 @@ const sourceColors = {
 };
 
 function loadNews() {
-  // Clear the list before re-rendering
   list.innerHTML = "";
 
-  // Fetch all feeds in parallel
   Promise.all(
     feeds.map(feed => {
       const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
@@ -37,12 +38,15 @@ function loadNews() {
             const title = item.title || "";
             const description = item.description || "";
 
-            // Escludi sempre "Oroscopo"
-            if (/oroscopo/i.test(title) || /oroscopo/i.test(description)) {
-              return false;
+            // --- Filtri esclusione comuni ---
+            for (const word of excludedWords) {
+              const regex = new RegExp(word, "i");
+              if (regex.test(title) || regex.test(description)) {
+                return false;
+              }
             }
 
-            // Per ANSA, tieni solo le notizie con "Livorno"
+            // --- Filtro speciale per ANSA: solo notizie con "Livorno" ---
             if (feed.name === "Ansa") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
@@ -62,10 +66,8 @@ function loadNews() {
         });
     })
   ).then(results => {
-    // Flatten all items into one array
     let allItems = results.flat();
 
-    // --- STEP 1: prime 2 notizie per ogni fonte (ordine delle fonti) ---
     let topPerSource = [];
     feeds.forEach(feed => {
       const fromSource = allItems
@@ -74,14 +76,11 @@ function loadNews() {
       topPerSource.push(...fromSource.slice(0, 2));
     });
 
-    // --- STEP 2: le altre notizie ---
     let remaining = allItems.filter(item => !topPerSource.includes(item));
     remaining.sort((a, b) => b.pubDate - a.pubDate);
 
-    // --- STEP 3: concatenare e limitare a 50 ---
     const finalList = [...topPerSource, ...remaining].slice(0, 50);
 
-    // --- STEP 4: render in pagina ---
     finalList.forEach(item => {
       const days = [
         "Domenica", "Lunedì", "Martedì",
@@ -94,13 +93,12 @@ function loadNews() {
 
       const formattedDate = `${dayName} alle ${hours}:${minutes}`;
 
-      // --- CARD stile Material ---
       const li = document.createElement("li");
       li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
       li.style.padding = "12px";
       li.style.borderRadius = "8px";
       li.style.marginBottom = "8px";
-      li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; // ombra leggera stile material
+      li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
 
       li.innerHTML = `<a href="${item.link}" target="_blank" style="font-weight:bold; color:#000; text-decoration:none;">
                         ${item.title}
@@ -117,5 +115,5 @@ function loadNews() {
 // Initial load
 loadNews();
 
-// Refresh every 5 minutes (300,000 ms)
+// Refresh ogni 5 minuti (300,000 ms)
 setInterval(loadNews, 300000);
