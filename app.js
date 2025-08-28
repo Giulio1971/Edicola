@@ -3,7 +3,8 @@ const feeds = [
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
   { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
-  { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" }
+  { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
+  { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" }
 ];
 
 const container = document.getElementById("news");
@@ -17,7 +18,8 @@ const sourceColors = {
   "Livorno Today": "#ffcccc",   // rosso chiaro
   "LivornoPress": "#ccffcc",    // verde chiaro
   "Qui Livorno": "#cceeff",     // celeste chiaro
-  "Comune": "#dddddd"           // grigio chiaro
+  "Comune": "#dddddd",          // grigio chiaro
+  "Ansa": "#ffffcc"             // giallo chiaro
 };
 
 function loadNews() {
@@ -30,12 +32,30 @@ function loadNews() {
       const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
       return fetch(apiUrl)
         .then(res => res.json())
-        .then(data => data.items.map(item => ({
-          title: item.title,
-          link: item.link,
-          pubDate: new Date(item.pubDate),
-          source: feed.name
-        })))
+        .then(data => data.items
+          .filter(item => {
+            const title = item.title || "";
+            const description = item.description || "";
+
+            // Escludi sempre "Oroscopo"
+            if (/oroscopo/i.test(title) || /oroscopo/i.test(description)) {
+              return false;
+            }
+
+            // Per ANSA, tieni solo le notizie con "Livorno"
+            if (feed.name === "Ansa") {
+              return /livorno/i.test(title) || /livorno/i.test(description);
+            }
+
+            return true;
+          })
+          .map(item => ({
+            title: item.title,
+            link: item.link,
+            pubDate: new Date(item.pubDate),
+            source: feed.name
+          }))
+        )
         .catch(err => {
           console.error("Errore nel caricare", feed.name, err);
           return [];
