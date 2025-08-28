@@ -96,36 +96,20 @@ function loadNews() {
 
       const formattedDate = `${dayName} alle ${hours}:${minutes}`;
 
-      // --- CARD stile Material con badge della fonte ---
+      // --- CARD stile Material senza grassetto ---
       const li = document.createElement("li");
-      li.style.backgroundColor = "#ffffff"; // sfondo bianco
+      li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
       li.style.padding = "12px";
       li.style.borderRadius = "8px";
       li.style.marginBottom = "8px";
       li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
-      li.style.display = "flex";
-      li.style.flexDirection = "column";
 
-      li.innerHTML = `
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-          <span style="
-            background-color:${sourceColors[item.source] || "#cccccc"};
-            color:#000;
-            padding:2px 6px;
-            border-radius:4px;
-            font-size:12px;
-            white-space:nowrap;
-          ">
-            ${item.source}
-          </span>
-          <a href="${item.link}" target="_blank" style="color:#000; text-decoration:none; flex:1;">
-            ${item.title}
-          </a>
-        </div>
-        <span style="color:#555; font-size:14px;">
-          ${formattedDate}
-        </span>
-      `;
+      li.innerHTML = `<a href="${item.link}" target="_blank" style="color:#000; text-decoration:none;">
+                        ${item.title}
+                      </a>
+                      <span style="color:#555; font-size:14px; margin-left:8px;">
+                        ${formattedDate}
+                      </span>`;
 
       list.appendChild(li);
     });
