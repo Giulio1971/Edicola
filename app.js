@@ -68,21 +68,11 @@ function loadNews() {
   ).then(results => {
     let allItems = results.flat();
 
-    // --- Prime 2 notizie per ogni fonte ---
-    let topPerSource = [];
-    feeds.forEach(feed => {
-      const fromSource = allItems
-        .filter(i => i.source === feed.name)
-        .sort((a, b) => b.pubDate - a.pubDate);
-      topPerSource.push(...fromSource.slice(0, 2));
-    });
-
-    // --- Altre notizie ---
-    let remaining = allItems.filter(item => !topPerSource.includes(item));
-    remaining.sort((a, b) => b.pubDate - a.pubDate);
+    // --- Ordinamento per data (cronologico inverso) ---
+    allItems.sort((a, b) => b.pubDate - a.pubDate);
 
     // --- Lista finale limitata a 50 ---
-    const finalList = [...topPerSource, ...remaining].slice(0, 50);
+    const finalList = allItems.slice(0, 50);
 
     finalList.forEach(item => {
       const days = [
