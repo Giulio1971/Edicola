@@ -68,6 +68,7 @@ function loadNews() {
   ).then(results => {
     let allItems = results.flat();
 
+    // --- Prime 2 notizie per ogni fonte ---
     let topPerSource = [];
     feeds.forEach(feed => {
       const fromSource = allItems
@@ -76,9 +77,11 @@ function loadNews() {
       topPerSource.push(...fromSource.slice(0, 2));
     });
 
+    // --- Altre notizie ---
     let remaining = allItems.filter(item => !topPerSource.includes(item));
     remaining.sort((a, b) => b.pubDate - a.pubDate);
 
+    // --- Lista finale limitata a 50 ---
     const finalList = [...topPerSource, ...remaining].slice(0, 50);
 
     finalList.forEach(item => {
@@ -93,6 +96,7 @@ function loadNews() {
 
       const formattedDate = `${dayName} alle ${hours}:${minutes}`;
 
+      // --- CARD stile Material senza grassetto ---
       const li = document.createElement("li");
       li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
       li.style.padding = "12px";
@@ -100,7 +104,7 @@ function loadNews() {
       li.style.marginBottom = "8px";
       li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
 
-      li.innerHTML = `<a href="${item.link}" target="_blank" style="font-weight:bold; color:#000; text-decoration:none;">
+      li.innerHTML = `<a href="${item.link}" target="_blank" style="color:#000; text-decoration:none;">
                         ${item.title}
                       </a>
                       <span style="color:#555; font-size:14px; margin-left:8px;">
@@ -112,7 +116,7 @@ function loadNews() {
   });
 }
 
-// Initial load
+// Caricamento iniziale
 loadNews();
 
 // Refresh ogni 5 minuti (300,000 ms)
