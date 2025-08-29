@@ -1,13 +1,5 @@
-
-
-In questo codice JS vorrei aggiungere un meccanismo in grado di aggiungere alla lista delle notizie anche i titoli delle notizie prese dal sito 
-
-https://www.iltirreno.it/livorno/cronaca
-
-Ad esempio la notizie "Livorno, tentano di rubare 75 euro di cosmetici da Tigotà: prese due donne" attualmente publicata su tale pagina de Il Tirreno.
-
 // Parole da escludere da tutte le fonti
-const excludedWords = ["Oroscopo", "Basket", "Calcio", "Libertas"];
+const excludedWords = ["Oroscopo", "Basket", "Calcio"];
 
 // Lista dei feed RSS che vuoi seguire
 const feeds = [
