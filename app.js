@@ -7,7 +7,8 @@ const feeds = [
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
   { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
   { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
-  { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" }
+  { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
+  { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" }
 ];
 
 const container = document.getElementById("news");
@@ -22,7 +23,8 @@ const sourceColors = {
   "LivornoPress": "#ccffcc",    // verde chiaro
   "Qui Livorno": "#cceeff",     // celeste chiaro
   "Comune": "#dddddd",          // grigio chiaro
-  "Ansa": "#ffffcc"             // giallo chiaro
+  "Ansa": "#ffffcc",            // giallo chiaro
+  "Toscana": "#ffffcc"          // giallo chiaro
 };
 
 let allItems = [];      // tutte le notizie scaricate
@@ -89,8 +91,8 @@ function loadNews() {
               }
             }
 
-            // --- Filtro speciale per ANSA: solo notizie con "Livorno" ---
-            if (feed.name === "Ansa") {
+            // --- Filtro speciale per ANSA e Toscana: solo notizie con "Livorno" ---
+            if (feed.name === "Ansa" || feed.name === "Toscana") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
 
