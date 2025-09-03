@@ -22,10 +22,10 @@ container.appendChild(list);
 // Colori delle testate
 const sourceColors = {
   "Livorno Today": "#FDEED9",     
-  "Il Tirreno": "#CFF5E7",        
+  "Il Tirreno": "#C9E2F8",        
   "Ansa": "#FCF9BE",              
   "Livorno24": "#D9F7D9",         
-  "Qui Livorno": "#C9E2F8",       
+  "Qui Livorno": "#CFF5E7",       
   "Comune": "#EBEBEB",            
   "Il Telegrafo": "#D0F0F0",      
   "Urban Livorno": "#FFD1DC",     
