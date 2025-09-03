@@ -32,7 +32,7 @@ const sourceColors = {
   "Comune": "#EBEBEB",            // Grigio perla
   "Il Telegrafo": "#D0F0F0",      // Acquamarina tenue
   "Urban Livorno": "#FFD1DC",     // Rosa cipria
-  "Livorno Sera": "#ebd8ed",      // Rosa 
+  "Livorno Sera": "#EBD8ED",      // Rosa 
   "LivornoPress": "#E6E6FA",      // Lilla lavanda
   "Toscana": "#F4F0E4"            // Beige sabbia
 };
