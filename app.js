@@ -102,7 +102,8 @@ function loadNews() {
     })
   ).then(results => {
     allItems = results.flat();
-    allItems.sort((a, b) => b.pubDate - a.pubDate);
+    //allItems.sort((a, b) => b.pubDate - a.pubDate);
+    allItems.sort(() => Math.random() - 0.5);
     renderMoreNews();
   });
 }
