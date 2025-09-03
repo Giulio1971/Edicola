@@ -6,10 +6,7 @@ const excludedWords = [
   "Pielle",
   "Libertas",
   "Serie C",
-  "partita",
-  "Cecina",
-  "Capraia",
-  "lirica"
+  "partita"
 ];
 
 // Lista dei feed RSS da seguire
@@ -20,8 +17,6 @@ const feeds = [
   { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
   { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
   { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
-
-  // Nuovi feed
   { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
   { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
@@ -29,19 +24,17 @@ const feeds = [
 ];
 
 const container = document.getElementById("news");
-
-// Creazione lista
 const list = document.createElement("ul");
 container.appendChild(list);
 
 // Colori fonti
 const sourceColors = {
-  "Ansa": "#ffffcc",       // giallo chiaro
-  "Toscana": "#ffffcc",    // giallo chiaro
-  "Comune": "#dddddd",     // grigio chiaro
-  "Il Tirreno": "#99ccff"  // celeste leggermente più scuro
+  "Ansa": "#ffffcc",
+  "Toscana": "#ffffcc",
+  "Comune": "#dddddd",
+  "Il Tirreno": "#99ccff" // celeste più scuro
 };
-const defaultColor = "#cceeff"; // celeste chiaro per tutte le altre
+const defaultColor = "#cceeff"; // celeste chiaro per le altre
 
 let allItems = [];
 let displayedCount = 0;
@@ -54,10 +47,6 @@ function renderMoreNews() {
   slice.forEach(item => {
     const li = document.createElement("li");
     li.style.backgroundColor = sourceColors[item.source] || defaultColor;
-    li.style.padding = "12px";
-    li.style.borderRadius = "8px";
-    li.style.marginBottom = "8px";
-    li.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
 
     li.innerHTML = `<a href="${item.link}" target="_blank" style="color:#000; text-decoration:none;">
                       ${item.title}
@@ -83,12 +72,9 @@ function loadNews() {
             const title = item.title || "";
             const description = item.description || "";
 
-            // Filtri esclusione case-insensitive
             for (const word of excludedWords) {
               const regex = new RegExp(word, "i");
-              if (regex.test(title) || regex.test(description)) {
-                return false;
-              }
+              if (regex.test(title) || regex.test(description)) return false;
             }
 
             // Solo notizie con "Livorno" per ANSA e Toscana
@@ -127,11 +113,7 @@ function loadNews() {
     })
   ).then(results => {
     allItems = results.flat();
-
-    // Ordinamento cronologico inverso
     allItems.sort((a, b) => b.pubDate - a.pubDate);
-
-    // Reset lista
     list.innerHTML = "";
     displayedCount = 0;
     renderMoreNews();
@@ -139,7 +121,6 @@ function loadNews() {
     // Notifiche nuove notizie
     const newLinks = allItems.map(n => n.link);
     const unseen = newLinks.filter(link => !lastSeenLinks.has(link));
-
     if (unseen.length > 0 && Notification.permission === "granted") {
       new Notification("Nuove notizie disponibili!", {
         body: `${unseen.length} nuovi articoli`,
@@ -164,6 +145,4 @@ if ("Notification" in window && Notification.permission !== "granted") {
 
 // Caricamento iniziale
 loadNews();
-
-// Refresh ogni 5 minuti
 setInterval(loadNews, 300000);
