@@ -134,4 +134,33 @@ function loadNews() {
     renderMoreNews();
 
     // --- Notifiche nuove notizie ---
-    const newLinks
+    const newLinks = allItems.map(n => n.link);
+    const unseen = newLinks.filter(link => !lastSeenLinks.has(link));
+
+    if (unseen.length > 0 && Notification.permission === "granted") {
+      new Notification("Nuove notizie disponibili!", {
+        body: `${unseen.length} nuovi articoli`,
+        icon: "https://cdn-icons-png.flaticon.com/512/21/21601.png"
+      });
+    }
+    lastSeenLinks = new Set(newLinks);
+  });
+}
+
+// --- Infinite Scroll ---
+window.addEventListener("scroll", () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+    renderMoreNews();
+  }
+});
+
+// --- Richiesta permesso notifiche ---
+if ("Notification" in window && Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
+// Caricamento iniziale
+loadNews();
+
+// Refresh ogni 5 minuti
+setInterval(loadNews, 300000);
