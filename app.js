@@ -42,9 +42,9 @@ const sourceOrder = [
   "Il Tirreno",
   "Il Telegrafo",
   "Qui Livorno",
-  "Livorno Today",
+   "LivornoPress",
   "Livorno24",
-  "LivornoPress",
+  "Livorno Today",
   "Urban Livorno",
   "Toscana",
   "Comune"
