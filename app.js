@@ -18,7 +18,7 @@ const feeds = [
   { name: "Il Tirreno", url: "https://politepol.com/fd/XZs73GuQOEsI.xml" },
   { name: "Livorno24", url: "https://politepol.com/fd/QXTvGCTWZdav.xml" },
   { name: "Il Telegrafo", url: "https://politepol.com/fd/6zOKXzQRl1ZM.xml" },
-  { name: "Livorno Sera", url: "https://politepol.com/fd/dlrZwvspgoLN.xml" } 
+  { name: "Livorno Sera", url: "https://politepol.com/fd/1woLPi7mKwX8.xml" } 
 ];
 
 // Colori testate
