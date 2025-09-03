@@ -59,7 +59,7 @@ function renderMoreNews() {
                       ${item.title}
                     </a>
                     <div style="color:#000; font-size:14px; margin-top:4px;">
-                      <b>${item.source}</b>
+                      <i>${item.source}</i>
                     </div>`;
 
     list.appendChild(li);
