@@ -1,11 +1,13 @@
 // Parole da escludere (case-insensitive)
 const excludedWords = [
   "Oroscopo", "Basket", "Calcio", "Pielle",
-  "Libertas", "Serie C", "partita"
+  "Libertas", "Serie C", "partita",
+  "Piombino", "Cecina", "Capraia", "lirica"
 ];
 
 // Lista dei feed RSS
 const feeds = [
+  { name: "Rai News", url: "https://www.rainews.it/rss/tutti" }, // nuovo feed in cima
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
@@ -20,20 +22,22 @@ const feeds = [
 
 // Colori testate
 const sourceColors = {
-  "Livorno Today": "#FDEED9",   // Rosa pesca chiaro
-  "Il Tirreno": "#C9E2F8",      // Azzurro cielo sereno
-  "Ansa": "#FCF9BE",            // Giallo crema
-  "Livorno24": "#D9F7D9",       // Verde menta pallido
-  "Qui Livorno": "#CFF5E7",     // Celeste polvere
-  "Comune": "#EBEBEB",          // Grigio perla
-  "Il Telegrafo": "#D0F0F0",    // Acquamarina tenue
-  "Urban Livorno": "#FFD1DC",   // Rosa cipria
-  "LivornoPress": "#E6E6FA",    // Lilla lavanda
-  "Toscana": "#F4F0E4"          // Beige sabbia
+  "Rai News": "#FCF9BE",          // stesso giallo di Ansa
+  "Livorno Today": "#FDEED9",     // Rosa pesca chiaro
+  "Il Tirreno": "#C9E2F8",        // Azzurro cielo sereno
+  "Ansa": "#FCF9BE",              // Giallo crema
+  "Livorno24": "#D9F7D9",         // Verde menta pallido
+  "Qui Livorno": "#CFF5E7",       // Celeste polvere
+  "Comune": "#EBEBEB",            // Grigio perla
+  "Il Telegrafo": "#D0F0F0",      // Acquamarina tenue
+  "Urban Livorno": "#FFD1DC",     // Rosa cipria
+  "LivornoPress": "#E6E6FA",      // Lilla lavanda
+  "Toscana": "#F4F0E4"            // Beige sabbia
 };
 
 // Ordine fisso delle testate
 const sourceOrder = [
+  "Rai News",  // posizionato in cima come Ansa
   "Ansa",
   "Il Tirreno",
   "Il Telegrafo",
@@ -88,8 +92,8 @@ function loadNews() {
               }
             }
 
-            // Filtro speciale per ANSA e Toscana: solo notizie con "Livorno"
-            if (feed.name === "Ansa" || feed.name === "Toscana") {
+            // Filtro speciale per ANSA, Toscana e Rai News: solo notizie con "Livorno"
+            if (feed.name === "Ansa" || feed.name === "Toscana" || feed.name === "Rai News") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
 
