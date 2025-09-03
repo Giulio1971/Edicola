@@ -1,7 +1,6 @@
 const excludedWords = [
-  "Oroscopo", "Basket", "Calcio", "Pielle",
-  "Libertas", "Serie C", "partita",
-  "Capraia", "Piombino", "Cecina", "lirica"
+  "Oroscopo","Basket","Calcio","Pielle","Libertas","Serie C","partita",
+  "Capraia","Piombino","Cecina","lirica"
 ];
 
 const feeds = [
@@ -31,26 +30,15 @@ const sourceColors = {
 };
 
 const sourceOrder = [
-  "Ansa",
-  "Il Tirreno",
-  "Il Telegrafo",
-  "Livorno Today",
-  "Qui Livorno",
-  "Livorno24",
-  "LivornoPress",
-  "Urban Livorno",
-  "Toscana",
-  "Comune"
+  "Ansa","Il Tirreno","Il Telegrafo","Livorno Today","Qui Livorno",
+  "Livorno24","LivornoPress","Urban Livorno","Toscana","Comune"
 ];
 
-const container = document.getElementById("news");
+const container = document.getElementById("news-container");
 let allItems = [];
 
-// --- Rendering ---
 function renderAllNews() {
   container.innerHTML = "";
-
-  // raggruppa per fonte
   const grouped = {};
   allItems.forEach(item => {
     if (!grouped[item.source]) grouped[item.source] = [];
@@ -59,38 +47,34 @@ function renderAllNews() {
 
   sourceOrder.forEach(source => {
     if (!grouped[source]) return;
-
     const block = document.createElement("div");
     block.className = "source-block";
 
     const news = grouped[source];
     news.forEach(item => {
       const div = document.createElement("div");
-      div.className = "news-item";
+      div.className = "news-card";
       div.style.backgroundColor = sourceColors[item.source] || "#ffffff";
-
       div.innerHTML = `
         <a href="${item.link}" target="_blank">${item.title}</a>
-        <div class="news-footer">${item.source}</div>
+        <div class="source-footer">${item.source}</div>
       `;
       block.appendChild(div);
     });
 
-    // riempi l’ultima riga con celle vuote (solo desktop)
+    // Celle vuote desktop
     const remainder = news.length % 5;
     if (remainder !== 0) {
       for (let i = remainder; i < 5; i++) {
         const empty = document.createElement("div");
-        empty.className = "news-item empty-cell";
+        empty.className = "news-card empty-cell";
         block.appendChild(empty);
       }
     }
-
     container.appendChild(block);
   });
 }
 
-// --- Caricamento ---
 function loadNews() {
   Promise.all(
     feeds.map(feed => {
@@ -101,54 +85,40 @@ function loadNews() {
           .filter(item => {
             const title = item.title || "";
             const description = item.description || "";
-
-            // escludi parole
             for (const word of excludedWords) {
-              if (new RegExp(word, "i").test(title) || new RegExp(word, "i").test(description)) {
-                return false;
-              }
+              if (new RegExp(word,"i").test(title) || new RegExp(word,"i").test(description)) return false;
             }
-
-            // filtro speciale per Ansa e Toscana
-            if (feed.name === "Ansa" || feed.name === "Toscana") {
+            if(feed.name==="Ansa" || feed.name==="Toscana") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
             return true;
           })
           .map(item => {
             const pubDate = new Date(item.pubDate);
-            pubDate.setHours(pubDate.getHours() - 2);
+            pubDate.setHours(pubDate.getHours()-2);
             return {
-              title: item.title.replace(/Il Tirreno\s*$/i, ""),
+              title: item.title.replace(/Il Tirreno\s*$/i,""),
               link: item.link,
               pubDate: pubDate,
               source: feed.name
             };
           })
         )
-        .catch(err => {
-          console.error("Errore nel caricare", feed.name, err);
-          return [];
-        });
+        .catch(err => { console.error("Errore nel caricare",feed.name,err); return []; });
     })
   ).then(results => {
     allItems = results.flat();
-
-    // solo ultime 48 ore
     const now = new Date();
-    allItems = allItems.filter(n => (now - n.pubDate) <= 48 * 60 * 60 * 1000);
-
-    // ordina per fonte e per data
-    allItems.sort((a, b) => {
+    allItems = allItems.filter(n => (now - n.pubDate) <= 48*60*60*1000);
+    allItems.sort((a,b)=>{
       const idxA = sourceOrder.indexOf(a.source);
       const idxB = sourceOrder.indexOf(b.source);
-      if (idxA === idxB) return b.pubDate - a.pubDate;
+      if(idxA===idxB) return b.pubDate - a.pubDate;
       return idxA - idxB;
     });
-
     renderAllNews();
   });
 }
 
 loadNews();
-setInterval(loadNews, 300000);
+setInterval(loadNews,300000);
