@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Font Inter da Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <title>Livorno News</title>
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #fafafa;
       max-width: 1200px;
       margin: auto;
       padding: 16px;
       box-sizing: border-box;
+      line-height: 1.5;
+      font-size: 16px;
+      color: #212121;
     }
 
     ul {
@@ -43,7 +47,7 @@
       text-decoration: underline;
     }
 
-    /* Layout desktop: mosaico */
+    /* Layout desktop: mosaico con ellissi */
     @media (min-width: 1024px) {
       #news ul {
         display: grid;
@@ -62,6 +66,15 @@
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 0;
+      }
+
+      /* Ellissi per il testo della notizia */
+      #news li a {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* massimo 3 righe visibili */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
@@ -83,6 +96,14 @@
         box-sizing: border-box;
         padding: 12px;
       }
+    }
+
+    /* Testata in italico sotto il titolo */
+    #news li div {
+      font-style: italic;
+      font-size: 14px;
+      margin-top: 4px;
+      color: #000;
     }
   </style>
 </head>
