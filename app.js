@@ -1,7 +1,7 @@
 // Parole da escludere da tutte le fonti (case-insensitive)
 const excludedWords = ["Oroscopo", "Basket", "Calcio", "Pielle", "Libertas", "Serie C", "partita"];
 
-// Lista dei feed RSS con URL e nome
+// Lista dei feed RSS
 const feeds = [
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
@@ -15,23 +15,22 @@ const feeds = [
   { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" }
 ];
 
-// Container per le notizie
 const container = document.getElementById("news");
 const list = document.createElement("ul");
 container.appendChild(list);
 
 // Colori delle testate
 const sourceColors = {
-  "Livorno Today": "#FDEED9",     // Rosa pesca chiaro
-  "Il Tirreno": "#CFF5E7",        // Azzurro cielo sereno
-  "Ansa": "#FCF9BE",              // Giallo crema
-  "Livorno24": "#D9F7D9",         // Verde menta pallido
-  "Qui Livorno": "#C9E2F8",       // Celeste polvere
-  "Comune": "#EBEBEB",            // Grigio perla
-  "Il Telegrafo": "#D0F0F0",      // Acquamarina tenue
-  "Urban Livorno": "#FFD1DC",     // Rosa cipria
-  "LivornoPress": "#E6E6FA",      // Lilla lavanda
-  "Toscana": "#F4F0E4"            // Beige sabbia
+  "Livorno Today": "#FDEED9",     
+  "Il Tirreno": "#CFF5E7",        
+  "Ansa": "#FCF9BE",              
+  "Livorno24": "#D9F7D9",         
+  "Qui Livorno": "#C9E2F8",       
+  "Comune": "#EBEBEB",            
+  "Il Telegrafo": "#D0F0F0",      
+  "Urban Livorno": "#FFD1DC",     
+  "LivornoPress": "#E6E6FA",      
+  "Toscana": "#F4F0E4"            
 };
 
 let allItems = [];
@@ -50,7 +49,6 @@ function renderMoreNews() {
     li.style.flexDirection = "column";
     if (window.innerWidth >= 1024) li.style.justifyContent = "space-between";
 
-    // Rimozione "Il Tirreno" dal titolo se presente
     let title = item.title;
     if (item.source === "Il Tirreno") title = title.replace(/\s*Il Tirreno$/i, "");
 
@@ -104,4 +102,16 @@ function loadNews() {
     })
   ).then(results => {
     allItems = results.flat();
-    allItems.so
+    allItems.sort((a, b) => b.pubDate - a.pubDate);
+    renderMoreNews();
+  });
+}
+
+// Caricamento iniziale
+loadNews();
+
+// Refresh ogni 5 minuti
+setInterval(loadNews, 300000);
+
+// Ricarica layout al resize per desktop/mobile
+window.addEventListener("resize", renderMoreNews);
