@@ -123,9 +123,9 @@ function loadNews() {
   ).then(results => {
     allItems = results.flat();
 
-    // Filtra notizie entro 36 ore
+    // Filtra notizie entro 48 ore
     const now = new Date();
-    allItems = allItems.filter(n => (now - n.pubDate) <= 36 * 60 * 60 * 1000);
+    allItems = allItems.filter(n => (now - n.pubDate) <= 48 * 60 * 60 * 1000);
 
     // Ordina per testata, poi per data decrescente
     allItems.sort((a, b) => {
