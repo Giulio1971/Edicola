@@ -47,7 +47,7 @@
       text-decoration: underline;
     }
 
-    /* Layout desktop: mosaico con ellissi */
+    /* Layout desktop: mosaico con ellissi e hover */
     @media (min-width: 1024px) {
       #news ul {
         display: grid;
@@ -61,20 +61,32 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-between; /* titolo sopra, testata in basso */
         padding: 12px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         margin-bottom: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
 
-      /* Ellissi per il testo della notizia */
+      #news li:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+
       #news li a {
         display: -webkit-box;
-        -webkit-line-clamp: 3; /* massimo 3 righe visibili */
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      #news li div {
+        font-style: italic;
+        font-size: 14px;
+        color: #000;
+        margin-top: 0;
       }
     }
 
@@ -95,15 +107,9 @@
         border-bottom: 1px solid rgba(0,0,0,0.12);
         box-sizing: border-box;
         padding: 12px;
+        display: flex;
+        flex-direction: column;
       }
-    }
-
-    /* Testata in italico sotto il titolo */
-    #news li div {
-      font-style: italic;
-      font-size: 14px;
-      margin-top: 4px;
-      color: #000;
     }
   </style>
 </head>
