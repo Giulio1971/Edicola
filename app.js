@@ -58,9 +58,9 @@ function renderMoreNews() {
     li.innerHTML = `<a href="${item.link}" target="_blank" style="color:#000; text-decoration:none;">
                       ${item.title}
                     </a>
-                    <span style="color:#000; font-size:14px; margin-left:8px;">
-                      – <b>${item.source}</b>
-                    </span>`;
+                    <div style="color:#000; font-size:14px; margin-top:4px;">
+                      <b>${item.source}</b>
+                    </div>`;
 
     list.appendChild(li);
   });
