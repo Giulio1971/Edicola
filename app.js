@@ -8,16 +8,16 @@ const excludedWords = [
 // Lista dei feed RSS
 const feeds = [
   { name: "Rai News", url: "https://www.rainews.it/rss/tutti" }, // nuovo feed in cima
-  { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
+  { name: "Urban Livorno", url: "https://politepol.com/fd/aTWhyA7ES6MO.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
   { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
   { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
   { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
   { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
-  { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
-  { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
-  { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" }
+  { name: "Il Tirreno", url: "https://politepol.com/fd/XZs73GuQOEsI.xml" },
+  { name: "Livorno24", url: "https://politepol.com/fd/QXTvGCTWZdav.xml" },
+  { name: "Il Telegrafo", url: "https://politepol.com/fd/6zOKXzQRl1ZM.xml" }
 ];
 
 // Colori testate
