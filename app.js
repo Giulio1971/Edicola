@@ -37,14 +37,12 @@ const sourceColors = {
 const defaultColor = "#cceeff"; // celeste chiaro per le altre
 
 let allItems = [];
-let displayedCount = 0;
-const pageSize = 20;
 let lastSeenLinks = new Set();
 
-// --- Rendering notizie ---
-function renderMoreNews() {
-  const slice = allItems.slice(displayedCount, displayedCount + pageSize);
-  slice.forEach(item => {
+// --- Rendering tutte le notizie ---
+function renderAllNews() {
+  list.innerHTML = "";
+  allItems.forEach(item => {
     const li = document.createElement("li");
     li.style.backgroundColor = sourceColors[item.source] || defaultColor;
 
@@ -57,7 +55,6 @@ function renderMoreNews() {
 
     list.appendChild(li);
   });
-  displayedCount += slice.length;
 }
 
 // --- Caricamento notizie ---
@@ -114,9 +111,8 @@ function loadNews() {
   ).then(results => {
     allItems = results.flat();
     allItems.sort((a, b) => b.pubDate - a.pubDate);
-    list.innerHTML = "";
-    displayedCount = 0;
-    renderMoreNews();
+
+    renderAllNews();
 
     // Notifiche nuove notizie
     const newLinks = allItems.map(n => n.link);
@@ -131,13 +127,6 @@ function loadNews() {
   });
 }
 
-// Infinite Scroll
-window.addEventListener("scroll", () => {
-  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-    renderMoreNews();
-  }
-});
-
 // Richiesta permesso notifiche
 if ("Notification" in window && Notification.permission !== "granted") {
   Notification.requestPermission();
@@ -145,4 +134,4 @@ if ("Notification" in window && Notification.permission !== "granted") {
 
 // Caricamento iniziale
 loadNews();
-setInterval(loadNews, 300000);
+setInterval(loadNews, 300000); // refresh ogni 5 minuti
