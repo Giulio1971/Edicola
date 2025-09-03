@@ -1,7 +1,6 @@
 // Parole da escludere (case-insensitive)
 const excludedWords = [
-  "Oroscopo", "Basket", "Calcio", "Pielle",
-  "Libertas", "Serie C", "partita"
+  "Oroscopo", "Basket", "Calcio", "Pielle", "Libertas", "Serie C", "partita", "Capraia", "Piombino", "Cecina", "lirica"
 ];
 
 // Lista dei feed RSS
