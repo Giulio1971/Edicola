@@ -77,9 +77,9 @@ function loadNews() {
               if (regex.test(title) || regex.test(description)) return false;
             }
 
-            // Solo ultime 24 ore
+            // Solo ultime 36 ore
             const pubDate = new Date(item.pubDate);
-            if ((now - pubDate) / (1000 * 60 * 60) > 24) return false;
+            if ((now - pubDate) / (1000 * 60 * 60) > 36) return false;
 
             // Filtro speciale per ANSA e Toscana: solo notizie con "Livorno"
             if (feed.name === "Ansa" || feed.name === "Toscana") {
