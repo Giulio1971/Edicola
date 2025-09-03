@@ -21,10 +21,10 @@ const feeds = [
 // Colori testate
 const sourceColors = {
   "Livorno Today": "#FDEED9",   // Rosa pesca chiaro
-  "Il Tirreno": "#CFF5E7",      // Azzurro cielo sereno
+  "Il Tirreno": "#C9E2F8",      // Azzurro cielo sereno
   "Ansa": "#FCF9BE",            // Giallo crema
   "Livorno24": "#D9F7D9",       // Verde menta pallido
-  "Qui Livorno": "#C9E2F8",     // Celeste polvere
+  "Qui Livorno": "#CFF5E7",     // Celeste polvere
   "Comune": "#EBEBEB",          // Grigio perla
   "Il Telegrafo": "#D0F0F0",    // Acquamarina tenue
   "Urban Livorno": "#FFD1DC",   // Rosa cipria
