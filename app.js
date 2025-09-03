@@ -35,7 +35,8 @@ container.appendChild(list);
 const sourceColors = {
   "Ansa": "#ffffcc",       // giallo chiaro
   "Toscana": "#ffffcc",    // giallo chiaro
-  "Comune": "#dddddd"      // grigio chiaro
+  "Comune": "#dddddd",     // grigio chiaro
+  "Il Tirreno": "#99ccff"  // celeste leggermente più scuro
 };
 const defaultColor = "#cceeff"; // celeste chiaro per tutte le altre
 
