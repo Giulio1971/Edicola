@@ -17,7 +17,8 @@ const feeds = [
   { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
   { name: "Il Tirreno", url: "https://politepol.com/fd/XZs73GuQOEsI.xml" },
   { name: "Livorno24", url: "https://politepol.com/fd/QXTvGCTWZdav.xml" },
-  { name: "Il Telegrafo", url: "https://politepol.com/fd/6zOKXzQRl1ZM.xml" }
+  { name: "Il Telegrafo", url: "https://politepol.com/fd/6zOKXzQRl1ZM.xml" },
+  { name: "Livorno Sera", url: "https://politepol.com/fd/dlrZwvspgoLN.xml" } 
 ];
 
 // Colori testate
@@ -31,6 +32,7 @@ const sourceColors = {
   "Comune": "#EBEBEB",            // Grigio perla
   "Il Telegrafo": "#D0F0F0",      // Acquamarina tenue
   "Urban Livorno": "#FFD1DC",     // Rosa cipria
+  "Livorno Sera": "#ebd8ed",      // Rosa 
   "LivornoPress": "#E6E6FA",      // Lilla lavanda
   "Toscana": "#F4F0E4"            // Beige sabbia
 };
@@ -42,10 +44,11 @@ const sourceOrder = [
   "Il Tirreno",
   "Il Telegrafo",
   "Qui Livorno",
-    "Livorno24",
-   "LivornoPress",
+  "Livorno24",
+  "LivornoPress",
   "Livorno Today",
   "Urban Livorno",
+  "Livorno Sera",
   "Toscana",
   "Comune"
 ];
