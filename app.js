@@ -1,30 +1,37 @@
 // Parole da escludere da tutte le fonti (case-insensitive)
 const excludedWords = ["Oroscopo", "Basket", "Calcio", "Pielle", "Libertas", "Serie C", "partita"];
 
-// Lista dei feed RSS
+// Lista dei feed RSS con URL e nome
 const feeds = [
-  { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
-  { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
-  { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" },
+  { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
+  { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
+  { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
+  { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
   { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
   { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
-  { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" }
+  { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
+  { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
+  { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" }
 ];
 
+// Container per le notizie
 const container = document.getElementById("news");
 const list = document.createElement("ul");
 container.appendChild(list);
 
 // Colori delle testate
 const sourceColors = {
-  "Il Tirreno": "#7fc8ff",
-  "Livorno24": "#dda0dd",
-  "Urban Livorno": "#ffc0cb",
-  "Il Telegrafo": "#ffcc99",
-  "Ansa": "#ffffcc",
-  "Toscana": "#ffffcc",
-  "Comune": "#dddddd"
+  "Livorno Today": "#FDEED9",     // Rosa pesca chiaro
+  "Il Tirreno": "#CFF5E7",        // Azzurro cielo sereno
+  "Ansa": "#FCF9BE",              // Giallo crema
+  "Livorno24": "#D9F7D9",         // Verde menta pallido
+  "Qui Livorno": "#C9E2F8",       // Celeste polvere
+  "Comune": "#EBEBEB",            // Grigio perla
+  "Il Telegrafo": "#D0F0F0",      // Acquamarina tenue
+  "Urban Livorno": "#FFD1DC",     // Rosa cipria
+  "LivornoPress": "#E6E6FA",      // Lilla lavanda
+  "Toscana": "#F4F0E4"            // Beige sabbia
 };
 
 let allItems = [];
@@ -43,6 +50,7 @@ function renderMoreNews() {
     li.style.flexDirection = "column";
     if (window.innerWidth >= 1024) li.style.justifyContent = "space-between";
 
+    // Rimozione "Il Tirreno" dal titolo se presente
     let title = item.title;
     if (item.source === "Il Tirreno") title = title.replace(/\s*Il Tirreno$/i, "");
 
@@ -65,13 +73,13 @@ function loadNews() {
             const title = item.title || "";
             const description = item.description || "";
 
-            // Filtri parole escluse
+            // Filtri parole escluse (case-insensitive)
             for (const word of excludedWords) {
               const regex = new RegExp(word, "i");
               if (regex.test(title) || regex.test(description)) return false;
             }
 
-            // Ultime 24 ore
+            // Solo ultime 24 ore
             const pubDate = new Date(item.pubDate);
             if ((now - pubDate) / (1000 * 60 * 60) > 24) return false;
 
@@ -96,16 +104,4 @@ function loadNews() {
     })
   ).then(results => {
     allItems = results.flat();
-    allItems.sort((a, b) => b.pubDate - a.pubDate);
-    renderMoreNews();
-  });
-}
-
-// Caricamento iniziale
-loadNews();
-
-// Refresh ogni 5 minuti
-setInterval(loadNews, 300000);
-
-// Ricarica layout al resize per desktop/mobile
-window.addEventListener("resize", renderMoreNews);
+    allItems.so
