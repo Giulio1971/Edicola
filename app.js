@@ -1,5 +1,5 @@
 // Parole da escludere da tutte le fonti (case-insensitive)
-const excludedWords = ["Oroscopo", "Basket", "Calcio", "Pielle", "Libertas", "Serie C", "partita"];
+const excludedWords = ["Oroscopo", "Basket", "Calcio", "Pielle", "Libertas", "Serie C", "partita", "Cecina", "lirica", "Capraia"];
 
 // Lista dei feed RSS
 const feeds = [
