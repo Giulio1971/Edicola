@@ -1,8 +1,10 @@
+// Parole da escludere (case-insensitive)
 const excludedWords = [
-  "Oroscopo","Basket","Calcio","Pielle","Libertas","Serie C","partita",
-  "Capraia","Piombino","Cecina","lirica"
+  "Oroscopo", "Basket", "Calcio", "Pielle",
+  "Libertas", "Serie C", "partita"
 ];
 
+// Lista dei feed RSS
 const feeds = [
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
@@ -16,65 +18,57 @@ const feeds = [
   { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" }
 ];
 
+// Colori testate
 const sourceColors = {
-  "Livorno Today": "#FDEED9",
-  "Il Tirreno": "#CFF5E7",
-  "Ansa": "#FCF9BE",
-  "Livorno24": "#D9F7D9",
-  "Qui Livorno": "#C9E2F8",
-  "Comune": "#EBEBEB",
-  "Il Telegrafo": "#D0F0F0",
-  "Urban Livorno": "#FFD1DC",
-  "LivornoPress": "#E6E6FA",
-  "Toscana": "#F4F0E4"
+  "Livorno Today": "#FDEED9",   // Rosa pesca chiaro
+  "Il Tirreno": "#CFF5E7",      // Azzurro cielo sereno
+  "Ansa": "#FCF9BE",            // Giallo crema
+  "Livorno24": "#D9F7D9",       // Verde menta pallido
+  "Qui Livorno": "#C9E2F8",     // Celeste polvere
+  "Comune": "#EBEBEB",          // Grigio perla
+  "Il Telegrafo": "#D0F0F0",    // Acquamarina tenue
+  "Urban Livorno": "#FFD1DC",   // Rosa cipria
+  "LivornoPress": "#E6E6FA",    // Lilla lavanda
+  "Toscana": "#F4F0E4"          // Beige sabbia
 };
 
+// Ordine fisso delle testate
 const sourceOrder = [
-  "Ansa","Il Tirreno","Il Telegrafo","Livorno Today","Qui Livorno",
-  "Livorno24","LivornoPress","Urban Livorno","Toscana","Comune"
+  "Ansa",
+  "Il Tirreno",
+  "Il Telegrafo",
+  "Livorno Today",
+  "Qui Livorno",
+  "Livorno24",
+  "LivornoPress",
+  "Urban Livorno",
+  "Toscana",
+  "Comune"
 ];
 
-const container = document.getElementById("news-container");
+const container = document.getElementById("news");
+const list = document.createElement("ul");
+container.appendChild(list);
+
 let allItems = [];
 
+// --- Rendering notizie ---
 function renderAllNews() {
-  container.innerHTML = "";
-  const grouped = {};
+  list.innerHTML = "";
   allItems.forEach(item => {
-    if (!grouped[item.source]) grouped[item.source] = [];
-    grouped[item.source].push(item);
-  });
+    const li = document.createElement("li");
+    li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
 
-  sourceOrder.forEach(source => {
-    if (!grouped[source]) return;
-    const block = document.createElement("div");
-    block.className = "source-block";
+    li.innerHTML = `
+      <a href="${item.link}" target="_blank">${item.title}</a>
+      <div>${item.source}</div>
+    `;
 
-    const news = grouped[source];
-    news.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "news-card";
-      div.style.backgroundColor = sourceColors[item.source] || "#ffffff";
-      div.innerHTML = `
-        <a href="${item.link}" target="_blank">${item.title}</a>
-        <div class="source-footer">${item.source}</div>
-      `;
-      block.appendChild(div);
-    });
-
-    // Celle vuote desktop
-    const remainder = news.length % 5;
-    if (remainder !== 0) {
-      for (let i = remainder; i < 5; i++) {
-        const empty = document.createElement("div");
-        empty.className = "news-card empty-cell";
-        block.appendChild(empty);
-      }
-    }
-    container.appendChild(block);
+    list.appendChild(li);
   });
 }
 
+// --- Caricamento notizie ---
 function loadNews() {
   Promise.all(
     feeds.map(feed => {
@@ -85,40 +79,63 @@ function loadNews() {
           .filter(item => {
             const title = item.title || "";
             const description = item.description || "";
+
+            // Esclusione parole
             for (const word of excludedWords) {
-              if (new RegExp(word,"i").test(title) || new RegExp(word,"i").test(description)) return false;
+              const regex = new RegExp(word, "i");
+              if (regex.test(title) || regex.test(description)) {
+                return false;
+              }
             }
-            if(feed.name==="Ansa" || feed.name==="Toscana") {
+
+            // Filtro speciale per ANSA e Toscana: solo notizie con "Livorno"
+            if (feed.name === "Ansa" || feed.name === "Toscana") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
+
             return true;
           })
           .map(item => {
+            // Correggi fuso orario (-2h)
             const pubDate = new Date(item.pubDate);
-            pubDate.setHours(pubDate.getHours()-2);
+            pubDate.setHours(pubDate.getHours() - 2);
+
             return {
-              title: item.title.replace(/Il Tirreno\s*$/i,""),
+              title: item.title.replace(/Il Tirreno\s*$/i, ""), // rimuovi "Il Tirreno" dai titoli
               link: item.link,
               pubDate: pubDate,
               source: feed.name
             };
           })
         )
-        .catch(err => { console.error("Errore nel caricare",feed.name,err); return []; });
+        .catch(err => {
+          console.error("Errore nel caricare", feed.name, err);
+          return [];
+        });
     })
   ).then(results => {
     allItems = results.flat();
+
+    // Filtra notizie entro 36 ore
     const now = new Date();
-    allItems = allItems.filter(n => (now - n.pubDate) <= 48*60*60*1000);
-    allItems.sort((a,b)=>{
+    allItems = allItems.filter(n => (now - n.pubDate) <= 36 * 60 * 60 * 1000);
+
+    // Ordina per testata, poi per data decrescente
+    allItems.sort((a, b) => {
       const idxA = sourceOrder.indexOf(a.source);
       const idxB = sourceOrder.indexOf(b.source);
-      if(idxA===idxB) return b.pubDate - a.pubDate;
+      if (idxA === idxB) {
+        return b.pubDate - a.pubDate;
+      }
       return idxA - idxB;
     });
+
     renderAllNews();
   });
 }
 
+// Caricamento iniziale
 loadNews();
-setInterval(loadNews,300000);
+
+// Refresh ogni 5 minuti
+setInterval(loadNews, 300000);
