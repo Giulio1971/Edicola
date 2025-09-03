@@ -8,7 +8,13 @@ const feeds = [
   { name: "Qui Livorno", url: "https://www.quilivorno.it/feed/" },
   { name: "Comune", url: "https://www.comune.livorno.it/it/news/feed/" },
   { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
-  { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" }
+  { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
+
+  // --- Nuovi feed ---
+  { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
+  { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
+  { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
+  { name: "Il Telegrafo", url: "https://rss.app/feeds/AqrxLQum6ReQrR3d.xml" }
 ];
 
 const container = document.getElementById("news");
@@ -24,7 +30,13 @@ const sourceColors = {
   "Qui Livorno": "#cceeff",     // celeste chiaro
   "Comune": "#dddddd",          // grigio chiaro
   "Ansa": "#ffffcc",            // giallo chiaro
-  "Toscana": "#ffffcc"          // giallo chiaro
+  "Toscana": "#ffffcc",         // giallo chiaro
+
+  // --- Nuovi colori ---
+  "Il Tirreno": "#add8e6",      // blu chiaro
+  "Livorno24": "#dda0dd",       // viola chiaro
+  "Urban Livorno": "#ffc0cb",   // rosa
+  "Il Telegrafo": "#ffcc99"     // arancione chiaro
 };
 
 let allItems = [];      // tutte le notizie scaricate
@@ -33,9 +45,11 @@ const pageSize = 20;    // quante notizie mostrare per volta
 let lastSeenLinks = new Set(); // per notifiche
 
 // --- Funzione per formattare il tempo in "X min fa" ---
+// Correzione: detrae 2 ore dall'orario originale
 function timeAgo(date) {
+  const correctedDate = new Date(date.getTime() - 2 * 60 * 60 * 1000); // -2h
   const now = new Date();
-  const diffMs = now - date;
+  const diffMs = now - correctedDate;
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);
   const diffHour = Math.floor(diffMin / 60);
@@ -103,8 +117,7 @@ function loadNews() {
             link: item.link,
             pubDate: new Date(item.pubDate),
             source: feed.name
-          }))
-        )
+          })))
         .catch(err => {
           console.error("Errore nel caricare", feed.name, err);
           return [];
