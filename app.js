@@ -9,7 +9,7 @@ const excludedWords = [
   "partita"
 ];
 
-// Lista dei feed RSS che vuoi seguire
+// Lista dei feed RSS da seguire
 const feeds = [
   { name: "Livorno Today", url: "https://www.livornotoday.it/rss" },
   { name: "LivornoPress", url: "https://www.livornopress.it/feed/" },
@@ -18,7 +18,7 @@ const feeds = [
   { name: "Ansa", url: "https://www.ansa.it/toscana/notizie/toscana_rss.xml" },
   { name: "Toscana", url: "https://www.toscana-notizie.it/archivio/-/asset_publisher/Lyd2Is2gGDzu/rss" },
 
-  // --- Nuovi feed ---
+  // Nuovi feed
   { name: "Il Tirreno", url: "https://rss.app/feeds/0GUahjgFVeLkmFyL.xml" },
   { name: "Livorno24", url: "https://rss.app/feeds/XQ0dFyxv5w1Xlwno.xml" },
   { name: "Urban Livorno", url: "https://rss.app/feeds/SaDtFZa4zNsqgPXz.xml" },
@@ -27,25 +27,17 @@ const feeds = [
 
 const container = document.getElementById("news");
 
-// Create one <ul> for all news
+// Creazione lista
 const list = document.createElement("ul");
 container.appendChild(list);
 
-// Mappa fonte → colore di sfondo
+// Colori fonti
 const sourceColors = {
-  "Livorno Today": "#ffcccc",   // rosso chiaro
-  "LivornoPress": "#ccffcc",    // verde chiaro
-  "Qui Livorno": "#cceeff",     // celeste chiaro
-  "Comune": "#dddddd",          // grigio chiaro
-  "Ansa": "#ffffcc",            // giallo chiaro
-  "Toscana": "#ffffcc",         // giallo chiaro
-
-  // --- Nuovi colori ---
-  "Il Tirreno": "#add8e6",      // blu chiaro
-  "Livorno24": "#dda0dd",       // viola chiaro
-  "Urban Livorno": "#ffc0cb",   // rosa
-  "Il Telegrafo": "#ffcc99"     // arancione chiaro
+  "Ansa": "#ffffcc",       // giallo chiaro
+  "Toscana": "#ffffcc",    // giallo chiaro
+  "Comune": "#dddddd"      // grigio chiaro
 };
+const defaultColor = "#cceeff"; // celeste chiaro per tutte le altre
 
 let allItems = [];
 let displayedCount = 0;
@@ -57,7 +49,7 @@ function renderMoreNews() {
   const slice = allItems.slice(displayedCount, displayedCount + pageSize);
   slice.forEach(item => {
     const li = document.createElement("li");
-    li.style.backgroundColor = sourceColors[item.source] || "#ffffff";
+    li.style.backgroundColor = sourceColors[item.source] || defaultColor;
     li.style.padding = "12px";
     li.style.borderRadius = "8px";
     li.style.marginBottom = "8px";
@@ -87,7 +79,7 @@ function loadNews() {
             const title = item.title || "";
             const description = item.description || "";
 
-            // --- Filtri esclusione comuni (case insensitive) ---
+            // Filtri esclusione case-insensitive
             for (const word of excludedWords) {
               const regex = new RegExp(word, "i");
               if (regex.test(title) || regex.test(description)) {
@@ -95,7 +87,7 @@ function loadNews() {
               }
             }
 
-            // --- Filtro speciale per ANSA e Toscana: solo notizie con "Livorno" ---
+            // Solo notizie con "Livorno" per ANSA e Toscana
             if (feed.name === "Ansa" || feed.name === "Toscana") {
               return /livorno/i.test(title) || /livorno/i.test(description);
             }
@@ -105,7 +97,7 @@ function loadNews() {
           .map(item => {
             let title = item.title;
 
-            // --- Pulizia titolo per "Il Tirreno" ---
+            // Pulizia titolo per Il Tirreno
             if (feed.name === "Il Tirreno") {
               title = title.replace(/\s*[-–—]?\s*Il Tirreno\s*$/i, "");
             }
@@ -116,7 +108,14 @@ function loadNews() {
               pubDate: new Date(item.pubDate),
               source: feed.name
             };
-          }))
+          })
+          // Solo notizie delle ultime 24 ore
+          .filter(item => {
+            const now = new Date();
+            const diffHours = (now - item.pubDate) / (1000 * 60 * 60);
+            return diffHours <= 24;
+          })
+        )
         .catch(err => {
           console.error("Errore nel caricare", feed.name, err);
           return [];
@@ -133,7 +132,7 @@ function loadNews() {
     displayedCount = 0;
     renderMoreNews();
 
-    // --- Notifiche nuove notizie ---
+    // Notifiche nuove notizie
     const newLinks = allItems.map(n => n.link);
     const unseen = newLinks.filter(link => !lastSeenLinks.has(link));
 
@@ -147,14 +146,14 @@ function loadNews() {
   });
 }
 
-// --- Infinite Scroll ---
+// Infinite Scroll
 window.addEventListener("scroll", () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
     renderMoreNews();
   }
 });
 
-// --- Richiesta permesso notifiche ---
+// Richiesta permesso notifiche
 if ("Notification" in window && Notification.permission !== "granted") {
   Notification.requestPermission();
 }
