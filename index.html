@@ -9,7 +9,7 @@
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fafafa;
-      max-width: 600px;
+      max-width: 1200px; /* più ampio per desktop mosaico */
       margin: auto;
       padding: 16px;
     }
@@ -41,10 +41,45 @@
     a:hover {
       text-decoration: underline;
     }
+
+    /* Layout desktop: mosaico */
+    @media (min-width: 1024px) {
+      #news ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+
+      #news li {
+        border-bottom: none;
+        height: 180px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 0;
+      }
+    }
+
+    /* Layout mobile: lista verticale */
+    @media (max-width: 1023px) {
+      #news ul {
+        display: block;
+      }
+
+      #news li {
+        width: 100%;
+        margin-bottom: 8px;
+        border-bottom: 1px solid rgba(0,0,0,0.12);
+      }
+    }
   </style>
 </head>
 <body>
-<!--  <h1>Edicola</h1> -->
+  <h1>Livorno News</h1>
   <div id="news"></div>
 
   <script src="app.js"></script>
