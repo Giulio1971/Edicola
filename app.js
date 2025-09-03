@@ -6,7 +6,10 @@ const excludedWords = [
   "Pielle",
   "Libertas",
   "Serie C",
-  "partita"
+  "partita",
+  "Cecina",
+  "Capraia",
+  "lirica"
 ];
 
 // Lista dei feed RSS da seguire
