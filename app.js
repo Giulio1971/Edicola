@@ -2,7 +2,9 @@
 const excludedWords = [
   "Oroscopo", "Basket", "Calcio", "Pielle",
   "Libertas", "Serie C", "partita",
-  "Piombino", "Cecina", "Capraia", "lirica"
+  "Piombino", "Cecina", "Capraia", "lirica",
+  "Tomei", "Football", "Rugby", "Karate",
+  "Tennis"
 ];
 
 // Lista dei feed RSS
